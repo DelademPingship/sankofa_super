@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { UsersIcon, CalendarDaysIcon, ArrowUpRightIcon, PlusIcon } from 'lucide-react';
 import { groupService } from '../../services/groupService';
 import type { SusuGroup } from '../../lib/types';
+import groupImage from '../../assets/images/Ghana-Susu-1.webp';
 
 const Groups = () => {
   const [groups, setGroups] = useState<SusuGroup[]>([]);
@@ -79,7 +80,7 @@ const Groups = () => {
                 className="rounded-3xl border border-slate-200 bg-white/90 shadow-lg transition hover:-translate-y-1 hover:border-primary dark:border-slate-800 dark:bg-slate-900/80"
               >
                 <div className="h-48 overflow-hidden rounded-t-3xl">
-                  <img src="/src/assets/images/Ghana-Susu-1.webp" alt={group.name} className="h-full w-full object-cover" />
+                  <img src={groupImage} alt={group.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="space-y-4 p-6">
                   <div className="flex items-center justify-between">

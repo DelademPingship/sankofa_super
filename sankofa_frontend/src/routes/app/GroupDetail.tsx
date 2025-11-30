@@ -4,6 +4,7 @@ import { ArrowLeftIcon, CalendarDaysIcon, UsersIcon, Wallet2Icon } from 'lucide-
 import { groupService } from '../../services/groupService';
 import { transactionService } from '../../services/transactionService';
 import type { SusuGroup, Transaction } from '../../lib/types';
+import groupImage from '../../assets/images/Ghana-Susu-1.webp';
 
 const GroupDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -83,7 +84,7 @@ const GroupDetail = () => {
   const cycleStatus = group.isPublic ? 'active' : 'draft';
   const cycleNumber = group.cycleNumber || 1;
   const totalCycles = group.totalCycles || totalMembers;
-  const heroImage = '/src/assets/images/Ghana-Susu-1.webp';
+  const heroImage = groupImage;
 
   return (
     <div className="space-y-8">

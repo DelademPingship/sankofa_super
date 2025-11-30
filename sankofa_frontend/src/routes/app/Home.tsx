@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { ArrowRightIcon, GiftIcon, PhoneCallIcon, PlusCircleIcon, ShieldCheckIcon } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useEffect, useState, useMemo } from 'react';
+import { ArrowUpRightIcon, PlusCircleIcon, GiftIcon, PhoneCallIcon, ShieldCheckIcon, ArrowRightIcon } from 'lucide-react';
 import { groupService } from '../../services/groupService';
 import { savingsService } from '../../services/savingsService';
 import { transactionService } from '../../services/transactionService';
 import { notificationService } from '../../services/notificationService';
+import { useAuth } from '../../contexts/AuthContext';
+import type { SusuGroup, SavingsGoal, Transaction, Notification, User } from '../../lib/types';
+import groupImage from '../../assets/images/Ghana-Susu-1.webp';
 import WalletModal from '../../components/WalletModal';
-import type { SusuGroup, SavingsGoal, Transaction, Notification } from '../../lib/types';
 
 const Home = () => {
   const { user } = useAuth();
@@ -188,7 +189,7 @@ const Home = () => {
                   className="flex gap-4 rounded-2xl border border-slate-200/70 bg-white/70 p-4 transition hover:-translate-y-0.5 hover:border-primary dark:border-slate-700 dark:bg-slate-900/70"
                 >
                   <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl">
-                    <img src="/src/assets/images/Ghana-Susu-1.webp" alt={group.name} className="h-full w-full object-cover" />
+                    <img src={groupImage} alt={group.name} className="h-full w-full object-cover" />
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-slate-900 dark:text-white">{group.name}</p>
