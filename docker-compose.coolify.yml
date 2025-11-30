@@ -32,6 +32,21 @@ services:
     volumes:
       - redis_data:/data
 
+  migrate:
+    build:
+      context: .
+      dockerfile: sankofa_backend/Dockerfile
+    command: python manage.py migrate --noinput
+    working_dir: /app/sankofa_backend
+    env_file:
+      - .env.production
+    environment:
+      <<: *backend-env
+    depends_on:
+      - postgres
+      - redis
+    restart: "no"
+
   backend:
     build:
       context: .
@@ -45,6 +60,7 @@ services:
     depends_on:
       - postgres
       - redis
+      - migrate
     ports:
       - "8000"
     restart: unless-stopped
