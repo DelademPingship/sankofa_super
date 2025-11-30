@@ -94,7 +94,7 @@ const Landing = () => {
             <div className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl dark:bg-primary/30" />
             <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
               <img
-                src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80"
+                src="Ghana-Susu-1"
                 alt="Sankofa members collaborating"
                 className="h-full w-full object-cover"
               />
