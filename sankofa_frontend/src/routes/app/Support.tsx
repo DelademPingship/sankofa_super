@@ -1,7 +1,33 @@
-import { supportArticles } from '../../assets/data/mockData';
 import { LifeBuoyIcon, MailIcon, MessageSquareIcon } from 'lucide-react';
 
 const Support = () => {
+  // Static support articles
+  const supportArticles = [
+    {
+      id: '1',
+      title: 'Getting Started with Groups',
+      category: 'Groups',
+      excerpt: 'Learn how to join and participate in susu groups'
+    },
+    {
+      id: '2', 
+      title: 'Setting Savings Goals',
+      category: 'Savings',
+      excerpt: 'Create and track personal savings goals'
+    },
+    {
+      id: '3',
+      title: 'Understanding Payouts',
+      category: 'Payments',
+      excerpt: 'How group payouts and rotations work'
+    },
+    {
+      id: '4',
+      title: 'KYC Verification Process',
+      category: 'Account',
+      excerpt: 'Complete your identity verification'
+    }
+  ];
   return (
     <div className="space-y-6">
       <header className="flex flex-col gap-2">
@@ -41,8 +67,8 @@ const Support = () => {
           {supportArticles.map((article) => (
             <div key={article.id} className="rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-lg transition hover:-translate-y-1 dark:border-slate-800 dark:bg-slate-900/80">
               <p className="text-xs font-semibold uppercase tracking-widest text-primary">{article.category}</p>
-              <h3 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">{article.question}</h3>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{article.answer}</p>
+              <h3 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">{article.title}</h3>
+              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{article.excerpt}</p>
             </div>
           ))}
         </div>

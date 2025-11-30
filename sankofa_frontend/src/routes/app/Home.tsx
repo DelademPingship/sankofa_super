@@ -8,7 +8,6 @@ import { transactionService } from '../../services/transactionService';
 import { notificationService } from '../../services/notificationService';
 import WalletModal from '../../components/WalletModal';
 import type { SusuGroup, SavingsGoal, Transaction, Notification } from '../../lib/types';
-import { processFlows } from '../../assets/data/mockData';
 
 const Home = () => {
   const { user } = useAuth();
@@ -18,6 +17,28 @@ const Home = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [walletModal, setWalletModal] = useState<'deposit' | 'withdrawal' | null>(null);
+
+  // Static process walkthroughs
+  const processWalkthroughs = [
+    {
+      id: '1',
+      name: 'Join a Group',
+      description: 'Find and join a susu group that matches your savings goals',
+      steps: ['Browse groups', 'Request to join', 'Wait for approval', 'Start contributing']
+    },
+    {
+      id: '2',
+      name: 'Set Up Savings Goals',
+      description: 'Create personal savings goals and track your progress',
+      steps: ['Create goal', 'Set target amount', 'Choose timeline', 'Track progress']
+    },
+    {
+      id: '3',
+      name: 'Request Payout',
+      description: 'Request your payout when it\'s your turn in the rotation',
+      steps: ['Check schedule', 'Request payout', 'Confirm details', 'Receive funds']
+    }
+  ];
 
   useEffect(() => {
     console.log('[Home] User changed:', user?.walletBalance, user?.kycStatus);
@@ -199,7 +220,7 @@ const Home = () => {
             </Link>
           </div>
           <div className="mt-4 space-y-4">
-            {processFlows.map((flow) => (
+            {processWalkthroughs.map((flow) => (
               <div key={flow.id} className="rounded-2xl border border-slate-200/70 bg-white/70 p-4 dark:border-slate-700 dark:bg-slate-900/70">
                 <p className="text-sm font-semibold text-slate-900 dark:text-white">{flow.name}</p>
                 <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">{flow.description}</p>

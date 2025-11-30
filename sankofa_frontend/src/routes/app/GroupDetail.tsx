@@ -1,11 +1,46 @@
-import { useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { groups, transactions } from '../../assets/data/mockData';
 import { ArrowLeftIcon, CalendarDaysIcon, UsersIcon, Wallet2Icon } from 'lucide-react';
+import { groupService } from '../../services/groupService';
+import { transactionService } from '../../services/transactionService';
+import type { SusuGroup, Transaction } from '../../lib/types';
 
 const GroupDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const group = useMemo(() => groups.find((item) => item.id === id), [id]);
+  const [group, setGroup] = useState<SusuGroup | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadGroupData = async () => {
+      if (!id) return;
+      
+      try {
+        const [groupData, transactionsData] = await Promise.all([
+          groupService.getGroupById(id),
+          transactionService.getTransactions()
+        ]);
+        
+        setGroup(groupData);
+        // Filter transactions for this group (using description as workaround since groupId doesn't exist)
+        setTransactions(transactionsData.filter(t => t.description?.includes(id) || t.counterparty === groupData.name).slice(0, 5));
+      } catch (error) {
+        console.error('Failed to load group data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadGroupData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-slate-500">Loading group details...</p>
+      </div>
+    );
+  }
 
   if (!group) {
     return (
@@ -19,7 +54,7 @@ const GroupDetail = () => {
   }
 
   const roster = ['Ama Boateng', 'Yaw Mensah', 'Akosua Agyeman', 'Kojo Owusu', 'Efua Serwaa', 'Nana Addo'];
-  const groupTransactions = transactions.filter((transaction) => transaction.type !== 'Deposit');
+  const groupTransactions = transactions.filter((transaction) => transaction.type !== 'deposit');
 
   return (
     <div className="space-y-8">
@@ -33,17 +68,17 @@ const GroupDetail = () => {
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{group.cycleStatus}</span>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Transparent susu circle with weekly GH₵{group.contribution} contributions and rotating payout schedule. This mirrors the
+            Transparent susu circle with GH₵{group.contributionAmount} contributions and rotating payout schedule. This mirrors the
             mobile detail view with roster, activity, and payout insights.
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl bg-slate-50/80 p-4 text-sm text-slate-600 shadow-inner dark:bg-slate-900/60 dark:text-slate-300">
               <p className="font-semibold text-slate-900 dark:text-white">Contribution rhythm</p>
-              <p className="mt-1">Weekly payments via mobile money auto-debit, due every Friday.</p>
+              <p className="mt-1">{group.contributionFrequency} payments via mobile money auto-debit.</p>
             </div>
             <div className="rounded-2xl bg-slate-50/80 p-4 text-sm text-slate-600 shadow-inner dark:bg-slate-900/60 dark:text-slate-300">
-              <p className="font-semibold text-slate-900 dark:text-white">Payout policy</p>
-              <p className="mt-1">Manual confirmation required 48 hours before scheduled payout.</p>
+              <p className="font-semibold text-slate-900 dark:text-white">Next payout</p>
+              <p className="mt-1">{group.nextPayoutDate || 'TBD'} • {group.nextPayoutRecipient || 'TBD'}</p>
             </div>
           </div>
           <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-5 dark:border-slate-700 dark:bg-slate-900/70">
@@ -60,12 +95,12 @@ const GroupDetail = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
           <div className="absolute bottom-6 left-6 right-6 space-y-3 rounded-3xl bg-white/90 p-6 text-sm text-slate-600 shadow-xl backdrop-blur dark:bg-slate-900/80 dark:text-slate-300">
             <div className="flex items-center gap-2 text-slate-900 dark:text-white">
-              <UsersIcon size={16} /> {group.members} members
+              <UsersIcon size={16} /> {group.totalMembers} members
             </div>
             <div className="flex items-center gap-2 text-slate-900 dark:text-white">
               <Wallet2Icon size={16} /> Pool GH₵{group.totalPool.toLocaleString()}
             </div>
-            <p>Contribution GH₵{group.contribution} weekly via wallet auto-debit.</p>
+            <p>Contribution GH₵{group.contributionAmount} {group.contributionFrequency} via wallet auto-debit.</p>
           </div>
         </div>
       </div>
@@ -88,7 +123,7 @@ const GroupDetail = () => {
             {groupTransactions.map((transaction) => (
               <div key={transaction.id} className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/70">
                 <p className="text-sm font-semibold text-slate-900 dark:text-white">{transaction.type}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{transaction.date} • {transaction.reference}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{transaction.createdAt} • {transaction.reference}</p>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">GH₵{transaction.amount.toLocaleString()} ({transaction.status})</p>
               </div>
             ))}

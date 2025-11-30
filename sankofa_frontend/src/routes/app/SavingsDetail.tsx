@@ -1,11 +1,46 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { savingsGoals, transactions } from '../../assets/data/mockData';
 import { ArrowLeftIcon, GiftIcon, SparklesIcon } from 'lucide-react';
+import { savingsService } from '../../services/savingsService';
+import { transactionService } from '../../services/transactionService';
+import type { SavingsGoal, Transaction } from '../../lib/types';
 
 const SavingsDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const goal = useMemo(() => savingsGoals.find((item) => item.id === id), [id]);
+  const [goal, setGoal] = useState<SavingsGoal | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadSavingsData = async () => {
+      if (!id) return;
+      
+      try {
+        const [goalData, transactionsData] = await Promise.all([
+          savingsService.getSavingsGoalById(id),
+          transactionService.getTransactions()
+        ]);
+        
+        setGoal(goalData);
+        // Filter transactions for this savings goal (using description as workaround since savingsGoalId doesn't exist)
+        setTransactions(transactionsData.filter(t => t.description?.includes(id) || t.counterparty === goalData.name).slice(0, 5));
+      } catch (error) {
+        console.error('Failed to load savings data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSavingsData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <p className="text-sm text-slate-500">Loading savings details...</p>
+      </div>
+    );
+  }
 
   if (!goal) {
     return (
@@ -19,7 +54,7 @@ const SavingsDetail = () => {
   }
 
   const progress = Math.round((goal.savedAmount / goal.targetAmount) * 100);
-  const goalTransactions = transactions.filter((transaction) => transaction.type !== 'Withdrawal');
+  const goalTransactions = transactions.filter((transaction) => transaction.type !== 'withdrawal');
 
   return (
     <div className="space-y-8">
@@ -61,7 +96,7 @@ const SavingsDetail = () => {
             {goalTransactions.map((transaction) => (
               <div key={transaction.id} className="rounded-2xl border border-slate-200/70 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-900/70">
                 <p className="text-sm font-semibold text-slate-900 dark:text-white">{transaction.type}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{transaction.date} • {transaction.channel}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">{transaction.createdAt} • {transaction.channel}</p>
                 <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">GH₵{transaction.amount.toLocaleString()} ({transaction.status})</p>
               </div>
             ))}

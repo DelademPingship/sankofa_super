@@ -1,11 +1,12 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import ThemeToggle from '../../components/ThemeToggle';
 import AppNav from '../../components/AppNav';
-import { memberProfile } from '../../assets/data/mockData';
+import { useAuth } from '../../contexts/AuthContext';
 import PrimaryButton from '../../components/PrimaryButton';
 
 const AppLayout = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-100/80 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
@@ -21,14 +22,19 @@ const AppLayout = () => {
             </Link>
             <div className="flex items-center gap-4">
               <div className="hidden text-right sm:block">
-                <p className="text-sm font-semibold">{memberProfile.name}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{memberProfile.tier}</p>
+                <p className="text-sm font-semibold">{user?.fullName || 'Loading...'}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {user?.kycStatus === 'verified' ? 'Verified Member' : user?.kycStatus || 'Pending'}
+                </p>
               </div>
-              <img
-                src={memberProfile.avatar}
-                alt={memberProfile.name}
-                className="h-12 w-12 rounded-full object-cover shadow-lg shadow-primary/20"
-              />
+              <div className="relative">
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center text-white font-semibold shadow-lg shadow-primary/20">
+                  {user?.fullName?.charAt(0).toUpperCase() || 'U'}
+                </div>
+                {user?.kycStatus === 'verified' && (
+                  <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900"></div>
+                )}
+              </div>
               <ThemeToggle />
             </div>
           </div>
