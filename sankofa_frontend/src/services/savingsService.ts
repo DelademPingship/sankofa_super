@@ -62,18 +62,18 @@ class SavingsService {
    * Create a new savings goal
    */
   async createSavingsGoal(
-    name: string,
+    title: string,
     targetAmount: number,
     category: string,
-    targetDate?: string
+    deadline?: string
   ): Promise<SavingsGoal> {
     const payload: Record<string, unknown> = {
-      name,
-      target_amount: targetAmount,
+      title,
+      targetAmount,
       category,
     };
-    if (targetDate) {
-      payload.target_date = targetDate;
+    if (deadline) {
+      payload.deadline = deadline;
     }
 
     const response = await apiClient.post<SavingsGoal>('/api/savings/goals/', payload);

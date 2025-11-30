@@ -53,7 +53,9 @@ const SavingsDetail = () => {
     );
   }
 
-  const progress = Math.round((goal.savedAmount / goal.targetAmount) * 100);
+  const savedAmount = goal.currentAmount || goal.savedAmount || 0;
+  const progress = Math.round((savedAmount / goal.targetAmount) * 100);
+  const goalName = goal.title || goal.name || 'Untitled Goal';
   const goalTransactions = transactions.filter((transaction) => transaction.type !== 'withdrawal');
 
   return (
@@ -65,13 +67,13 @@ const SavingsDetail = () => {
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-widest text-primary">Savings goal</p>
-            <h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{goal.name}</h1>
+            <h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">{goalName}</h1>
             <p className="text-sm text-slate-600 dark:text-slate-300">{goal.category} • Target GH₵{goal.targetAmount.toLocaleString()}</p>
           </div>
           <div className="rounded-3xl bg-primary/10 px-6 py-4 text-right text-primary">
             <p className="text-xs uppercase">Progress</p>
             <p className="text-3xl font-bold">{progress}%</p>
-            <p className="text-xs text-primary/70">Saved GH₵{goal.savedAmount.toLocaleString()}</p>
+            <p className="text-xs text-primary/70">Saved GH₵{savedAmount.toLocaleString()}</p>
           </div>
         </div>
         <div className="mt-6 h-3 rounded-full bg-slate-200 dark:bg-slate-700">

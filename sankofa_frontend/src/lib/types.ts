@@ -49,14 +49,19 @@ export interface SusuGroup {
 
 export interface SavingsGoal {
   id: string;
-  name: string;
+  userId: string;
+  title: string;
   category: string;
   targetAmount: number;
-  savedAmount: number;
-  targetDate?: string;
-  status: 'active' | 'completed' | 'paused';
+  currentAmount: number;
+  deadline: string;
   createdAt: string;
   updatedAt: string;
+  // Frontend compatibility fields
+  name?: string;
+  savedAmount?: number;
+  targetDate?: string;
+  status?: 'active' | 'completed' | 'paused';
 }
 
 export interface Transaction {

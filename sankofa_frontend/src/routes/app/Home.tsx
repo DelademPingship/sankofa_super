@@ -78,7 +78,7 @@ const Home = () => {
     { label: 'Contact support', icon: PhoneCallIcon, to: '/app/support', description: 'Chat with an agent' }
   ];
 
-  const savingsTotal = savingsGoals.reduce((sum, goal) => sum + goal.savedAmount, 0);
+  const savingsTotal = savingsGoals.reduce((sum, goal) => sum + (goal.currentAmount || goal.savedAmount || 0), 0);
   const walletBalance = user?.walletBalance || 0;
 
   if (loading) {
@@ -146,12 +146,14 @@ const Home = () => {
           </p>
           <div className="mt-6 space-y-4">
             {savingsGoals.map((goal) => {
-              const progress = Math.round((goal.savedAmount / goal.targetAmount) * 100);
+              const savedAmount = goal.currentAmount || goal.savedAmount || 0;
+              const progress = Math.round((savedAmount / goal.targetAmount) * 100);
+              const goalName = goal.title || goal.name || 'Untitled Goal';
               return (
                 <div key={goal.id} className="space-y-2 rounded-2xl bg-white/10 p-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-semibold">{goal.name}</p>
+                      <p className="text-sm font-semibold">{goalName}</p>
                       <p className="text-xs text-primary-foreground/70">Target GH₵{goal.targetAmount.toLocaleString()}</p>
                     </div>
                     <span className="text-sm font-semibold">{progress}%</span>

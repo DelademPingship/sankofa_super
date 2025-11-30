@@ -109,10 +109,10 @@ const Savings = () => {
 
 const CreateGoalModal = ({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    title: '',
     category: '',
     targetAmount: '',
-    targetDate: '',
+    deadline: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -124,10 +124,10 @@ const CreateGoalModal = ({ onClose, onSuccess }: { onClose: () => void; onSucces
 
     try {
       await savingsService.createSavingsGoal(
-        formData.name,
+        formData.title,
         parseFloat(formData.targetAmount),
         formData.category,
-        formData.targetDate || undefined
+        formData.deadline || undefined
       );
       onSuccess();
     } catch (err: any) {
@@ -151,12 +151,12 @@ const CreateGoalModal = ({ onClose, onSuccess }: { onClose: () => void; onSucces
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-slate-900 dark:text-white">Goal Name</label>
+            <label className="block text-sm font-semibold text-slate-900 dark:text-white">Goal Title</label>
             <input
               type="text"
               required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
               className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 focus:border-primary focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               placeholder="e.g., Emergency Fund"
             />
@@ -195,12 +195,12 @@ const CreateGoalModal = ({ onClose, onSuccess }: { onClose: () => void; onSucces
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-900 dark:text-white">Target Date</label>
+            <label className="block text-sm font-semibold text-slate-900 dark:text-white">Deadline</label>
             <input
               type="date"
               required
-              value={formData.targetDate}
-              onChange={(e) => setFormData({ ...formData, targetDate: e.target.value })}
+              value={formData.deadline}
+              onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
               className="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 focus:border-primary focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white"
             />
           </div>
