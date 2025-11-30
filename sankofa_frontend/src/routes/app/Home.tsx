@@ -47,18 +47,25 @@ const Home = () => {
 
   const loadData = async () => {
     try {
+      console.log('[Home] Loading dashboard data...');
       const [groupsData, goalsData, transactionsData, notificationsData] = await Promise.all([
         groupService.getGroups(),
         savingsService.getSavingsGoals(),
         transactionService.getTransactions(),
         notificationService.getNotifications(),
       ]);
+      
+      console.log('[Home] Groups loaded:', groupsData);
+      console.log('[Home] Goals loaded:', goalsData);
+      console.log('[Home] Transactions loaded:', transactionsData);
+      console.log('[Home] Notifications loaded:', notificationsData);
+      
       setGroups(groupsData.slice(0, 2)); // Show top 2
       setSavingsGoals(goalsData);
       setTransactions(transactionsData.slice(0, 3)); // Show top 3
       setNotifications(notificationsData.slice(0, 3)); // Show top 3
     } catch (error) {
-      console.error('Failed to load data:', error);
+      console.error('[Home] Failed to load data:', error);
     } finally {
       setLoading(false);
     }

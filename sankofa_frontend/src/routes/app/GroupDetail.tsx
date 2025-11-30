@@ -13,7 +13,13 @@ const GroupDetail = () => {
 
   useEffect(() => {
     const loadGroupData = async () => {
-      if (!id) return;
+      if (!id) {
+        console.error('[GroupDetail] No group ID provided');
+        setLoading(false);
+        return;
+      }
+      
+      console.log('[GroupDetail] Loading data for group ID:', id);
       
       try {
         const [groupData, transactionsData] = await Promise.all([
@@ -21,11 +27,22 @@ const GroupDetail = () => {
           transactionService.getTransactions()
         ]);
         
-        setGroup(groupData);
-        // Filter transactions for this group (using description as workaround since groupId doesn't exist)
-        setTransactions(transactionsData.filter(t => t.description?.includes(id) || t.counterparty === groupData.name).slice(0, 5));
+        console.log('[GroupDetail] Group data:', groupData);
+        console.log('[GroupDetail] Transactions data:', transactionsData);
+        
+        if (!groupData) {
+          console.error('[GroupDetail] Group not found for ID:', id);
+        } else {
+          setGroup(groupData);
+          // Filter transactions for this group (using description as workaround since groupId doesn't exist)
+          const filteredTransactions = transactionsData.filter(t => 
+            t.description?.includes(id) || t.counterparty === groupData.name
+          ).slice(0, 5);
+          console.log('[GroupDetail] Filtered transactions:', filteredTransactions);
+          setTransactions(filteredTransactions);
+        }
       } catch (error) {
-        console.error('Failed to load group data:', error);
+        console.error('[GroupDetail] Failed to load group data:', error);
       } finally {
         setLoading(false);
       }
