@@ -7,6 +7,7 @@ import { userService } from '../../services/userService';
 import { ApiException } from '../../lib/apiException';
 import { digitsOnly, formatForDisplay, isValidGhanaMobile, maskForDisplay, normalizeGhanaPhone } from '../../lib/ghanaPhone';
 import { useAuth } from '../../contexts/AuthContext';
+import MoneyImage from '../../assets/images/money.jpg';
 
 type Stage = 'details' | 'otp';
 
@@ -351,7 +352,7 @@ const Register = () => {
             </div>
             <div className="relative hidden md:block">
               <img
-                src="/src/assets/images/money.jpg"
+                src={MoneyImage}
                 alt="New member celebrating"
                 className="h-full w-full object-cover"
               />

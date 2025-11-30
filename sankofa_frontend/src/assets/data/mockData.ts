@@ -1,3 +1,7 @@
+import GhanaCediImage from '../images/ghana-cedi.jpg.webp';
+import SavingsImage from '../images/Savings.jpg';
+import SusuCollectImage from '../images/susu-collect.webp';
+
 export const memberProfile = {
   name: 'Ama Boateng',
   phone: '+233 50 123 4567',
@@ -19,17 +23,17 @@ export const onboardingSlides = [
   {
     title: 'Build wealth together',
     description: 'Join trusted susu groups with instant transparency, flexible payouts, and community safeguards.',
-    image: '/src/assets/images/ghana-cedi.jpg.webp'
+    image: GhanaCediImage
   },
   {
     title: 'Boost your savings goals',
     description: 'Automated reminders, mobile money deposits, and celebration milestones keep you motivated.',
-    image: '/src/assets/images/Savings.jpg'
+    image: SavingsImage
   },
   {
     title: 'Stay in control 24/7',
     description: 'Track contributions, payouts, and receipts in real-time across devices with Sankofa.',
-    image: '/src/assets/images/susu-collect.webp'
+    image: SusuCollectImage
   }
 ];
 

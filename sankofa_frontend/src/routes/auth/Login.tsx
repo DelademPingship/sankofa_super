@@ -7,6 +7,7 @@ import { userService } from '../../services/userService';
 import { useAuth } from '../../contexts/AuthContext';
 import { ApiException } from '../../lib/apiException';
 import { digitsOnly, formatForDisplay, isValidGhanaMobile, maskForDisplay, normalizeGhanaPhone } from '../../lib/ghanaPhone';
+import ContribImage from '../../assets/images/Contrib.png';
 
 const Login = () => {
   const [phone, setPhone] = useState('');
@@ -285,7 +286,7 @@ const Login = () => {
             </div>
             <div className="relative hidden md:block">
               <img
-                src="/src/assets/images/Contrib.png"
+                src={ContribImage}
                 alt="Member smiling"
                 className="h-full w-full object-cover"
               />
