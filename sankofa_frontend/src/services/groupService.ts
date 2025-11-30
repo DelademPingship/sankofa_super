@@ -28,55 +28,7 @@ class GroupService {
       // Fall back to cached data on error
     }
 
-    // If no groups exist, provide sample data for development
-    if (!this.cachedGroups || this.cachedGroups.length === 0) {
-      console.log('[GroupService] No groups found, providing sample data');
-      const sampleGroups: SusuGroup[] = [
-        {
-          id: 'sample-1',
-          name: 'Weekly Savings Circle',
-          description: 'A group for weekly savings with rotating payouts',
-          memberIds: ['1', '2', '3', '4', '5', '6'],
-          memberNames: ['Ama Boateng', 'Yaw Mensah', 'Akosua Agyeman', 'Kojo Owusu', 'Efua Serwaa', 'Nana Addo'],
-          invites: [],
-          targetMemberCount: 6,
-          contributionAmount: 100,
-          cycleNumber: 3,
-          totalCycles: 6,
-          nextPayoutDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          payoutOrder: 'Rotating (weekly)',
-          isPublic: true,
-          frequency: 'weekly',
-          location: 'Accra, Ghana',
-          requiresApproval: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        {
-          id: 'sample-2',
-          name: 'Monthly Investment Group',
-          description: 'Monthly contributions for long-term savings goals',
-          memberIds: ['1', '2', '3', '4'],
-          memberNames: ['Kojo Owusu', 'Ama Boateng', 'Yaw Mensah', 'Akosua Agyeman'],
-          invites: [],
-          targetMemberCount: 4,
-          contributionAmount: 500,
-          cycleNumber: 2,
-          totalCycles: 4,
-          nextPayoutDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-          payoutOrder: 'Rotating (monthly)',
-          isPublic: true,
-          frequency: 'monthly',
-          location: 'Kumasi, Ghana',
-          requiresApproval: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        }
-      ];
-      this.cacheGroups(sampleGroups);
-      return sampleGroups;
-    }
-
+    // Return empty array if no groups exist (no more sample data)
     return this.cachedGroups || [];
   }
 
@@ -105,14 +57,6 @@ class GroupService {
       }
     } catch (error) {
       console.error('[GroupService] Failed to fetch group by ID:', error);
-      // Check if it's a sample group ID
-      if (id.startsWith('sample-') && this.cachedGroups) {
-        const sampleGroup = this.cachedGroups.find(g => g.id === id);
-        if (sampleGroup) {
-          console.log('[GroupService] Returning sample group:', sampleGroup);
-          return sampleGroup;
-        }
-      }
     }
 
     console.log('[GroupService] Group not found:', id);

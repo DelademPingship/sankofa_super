@@ -28,51 +28,7 @@ class TransactionService {
       // Fall back to cached data on error
     }
 
-    // If no transactions exist, provide sample data for development
-    if (!this.cachedTransactions || this.cachedTransactions.length === 0) {
-      console.log('[TransactionService] No transactions found, providing sample data');
-      const sampleTransactions: Transaction[] = [
-        {
-          id: 'sample-tx-1',
-          type: 'contribution' as const,
-          amount: 100,
-          status: 'completed' as const,
-          channel: 'mobile_money',
-          reference: 'MM-2024-001',
-          description: 'Weekly contribution to Weekly Savings Circle',
-          counterparty: 'Weekly Savings Circle',
-          createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-          id: 'sample-tx-2',
-          type: 'payout' as const,
-          amount: 600,
-          status: 'completed' as const,
-          channel: 'mobile_money',
-          reference: 'MM-2024-002',
-          description: 'Payout to Ama Boateng from Weekly Savings Circle',
-          counterparty: 'Ama Boateng',
-          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        },
-        {
-          id: 'sample-tx-3',
-          type: 'contribution' as const,
-          amount: 500,
-          status: 'completed' as const,
-          channel: 'mobile_money',
-          reference: 'MM-2024-003',
-          description: 'Monthly contribution to Monthly Investment Group',
-          counterparty: 'Monthly Investment Group',
-          createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-        }
-      ];
-      this.cacheTransactions(sampleTransactions);
-      return sampleTransactions;
-    }
-
+    // Return empty array if no transactions exist (no more sample data)
     return this.cachedTransactions || [];
   }
 
