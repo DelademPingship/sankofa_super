@@ -174,24 +174,32 @@ const Home = () => {
             </Link>
           </div>
           <div className="mt-4 space-y-4">
-            {groups.map((group) => (
-              <Link
-                key={group.id}
-                to={`/app/groups/${group.id}`}
-                className="flex gap-4 rounded-2xl border border-slate-200/70 bg-white/70 p-4 transition hover:-translate-y-0.5 hover:border-primary dark:border-slate-700 dark:bg-slate-900/70"
-              >
-                <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl">
-                  <img src={group.heroImage} alt={group.name} className="h-full w-full object-cover" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-slate-900 dark:text-white">{group.name}</p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">{group.totalMembers} members • GH₵{group.contributionAmount} {group.contributionFrequency}</p>
-                  <p className="mt-1 text-xs text-primary">
-                    {group.nextPayoutDate ? `Next payout: ${new Date(group.nextPayoutDate).toLocaleDateString()}` : 'No payout scheduled'} ({group.cycleStatus})
-                  </p>
-                </div>
-              </Link>
-            ))}
+            {groups.map((group) => {
+              const totalMembers = group.totalMembers || group.memberIds?.length || 0;
+              const contributionAmount = group.contributionAmount || 0;
+              const contributionFrequency = group.contributionFrequency || 'weekly';
+              const nextPayoutDate = group.nextPayoutDate || null;
+              const cycleStatus = group.cycleStatus || 'draft';
+              
+              return (
+                <Link
+                  key={group.id}
+                  to={`/app/groups/${group.id}`}
+                  className="flex gap-4 rounded-2xl border border-slate-200/70 bg-white/70 p-4 transition hover:-translate-y-0.5 hover:border-primary dark:border-slate-700 dark:bg-slate-900/70"
+                >
+                  <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl">
+                    <img src={group.heroImage || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80'} alt={group.name} className="h-full w-full object-cover" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-slate-900 dark:text-white">{group.name}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{totalMembers} members • GH₵{contributionAmount?.toLocaleString() || 0} {contributionFrequency}</p>
+                    <p className="mt-1 text-xs text-primary">
+                      {nextPayoutDate ? `Next payout: ${new Date(nextPayoutDate).toLocaleDateString()}` : 'No payout scheduled'} ({cycleStatus})
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg dark:border-slate-800 dark:bg-slate-900">

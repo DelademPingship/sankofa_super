@@ -30,6 +30,10 @@ export interface SusuGroup {
   heroImage?: string;
   createdAt: string;
   updatedAt: string;
+  // API response properties
+  memberIds?: string[];
+  memberNames?: string[];
+  invites?: any[];
 }
 
 export interface SavingsGoal {
