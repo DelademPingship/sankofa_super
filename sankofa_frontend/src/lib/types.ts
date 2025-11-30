@@ -19,21 +19,32 @@ export interface SusuGroup {
   id: string;
   name: string;
   description?: string;
-  cycleStatus: 'draft' | 'onboarding' | 'active' | 'completed' | 'paused';
+  // API response fields
+  memberIds: string[];
+  memberNames: string[];
+  invites: any[];
+  ownerId?: string;
+  ownerName?: string;
+  ownedByPlatform?: boolean;
+  targetMemberCount: number;
   contributionAmount: number;
-  contributionFrequency: 'daily' | 'weekly' | 'biweekly' | 'monthly';
-  totalMembers: number;
-  currentCycle?: number;
+  cycleNumber: number;
+  totalCycles: number;
   nextPayoutDate?: string;
-  nextPayoutRecipient?: string;
-  totalPool: number;
-  heroImage?: string;
+  payoutOrder?: string;
+  isPublic: boolean;
+  frequency: string;
+  location?: string;
+  requiresApproval: boolean;
   createdAt: string;
   updatedAt: string;
-  // API response properties
-  memberIds?: string[];
-  memberNames?: string[];
-  invites?: any[];
+  // Computed fields for frontend compatibility
+  totalMembers?: number;
+  contributionFrequency?: string;
+  cycleStatus?: string;
+  totalPool?: number;
+  nextPayoutRecipient?: string;
+  heroImage?: string;
 }
 
 export interface SavingsGoal {

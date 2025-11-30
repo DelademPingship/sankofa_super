@@ -175,11 +175,11 @@ const Home = () => {
           </div>
           <div className="mt-4 space-y-4">
             {groups.map((group) => {
-              const totalMembers = group.totalMembers || group.memberIds?.length || 0;
+              const totalMembers = group.memberIds?.length || 0;
               const contributionAmount = group.contributionAmount || 0;
-              const contributionFrequency = group.contributionFrequency || 'weekly';
+              const contributionFrequency = group.frequency || 'weekly';
               const nextPayoutDate = group.nextPayoutDate || null;
-              const cycleStatus = group.cycleStatus || 'draft';
+              const cycleStatus = group.isPublic ? 'active' : 'draft';
               
               return (
                 <Link
@@ -188,7 +188,7 @@ const Home = () => {
                   className="flex gap-4 rounded-2xl border border-slate-200/70 bg-white/70 p-4 transition hover:-translate-y-0.5 hover:border-primary dark:border-slate-700 dark:bg-slate-900/70"
                 >
                   <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-2xl">
-                    <img src={group.heroImage || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80'} alt={group.name} className="h-full w-full object-cover" />
+                    <img src="/src/assets/images/Ghana-Susu-1.webp" alt={group.name} className="h-full w-full object-cover" />
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-slate-900 dark:text-white">{group.name}</p>

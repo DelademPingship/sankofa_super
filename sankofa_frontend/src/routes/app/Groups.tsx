@@ -62,16 +62,15 @@ const Groups = () => {
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
           {groups.map((group) => {
-            const contributionAmount =
-              typeof group.contributionAmount === 'number' && Number.isFinite(group.contributionAmount)
-                ? group.contributionAmount
-                : 0;
-            const totalPool =
-              typeof group.totalPool === 'number' && Number.isFinite(group.totalPool) ? group.totalPool : 0;
-            const nextPayoutText =
-              group.nextPayoutDate && !Number.isNaN(Date.parse(group.nextPayoutDate))
-                ? `Next payout on ${new Date(group.nextPayoutDate).toLocaleDateString()}`
-                : 'No payout scheduled';
+            const totalMembers = group.memberIds?.length || 0;
+            const contributionAmount = group.contributionAmount || 0;
+            const contributionFrequency = group.frequency || 'weekly';
+            const nextPayoutDate = group.nextPayoutDate || null;
+            const cycleStatus = group.isPublic ? 'active' : 'draft';
+            const totalPool = (contributionAmount * totalMembers) || 0;
+            const nextPayoutText = nextPayoutDate 
+              ? `Next payout on ${new Date(nextPayoutDate).toLocaleDateString()}`
+              : 'No payout scheduled';
 
             return (
               <Link
@@ -80,22 +79,22 @@ const Groups = () => {
                 className="rounded-3xl border border-slate-200 bg-white/90 shadow-lg transition hover:-translate-y-1 hover:border-primary dark:border-slate-800 dark:bg-slate-900/80"
               >
                 <div className="h-48 overflow-hidden rounded-t-3xl">
-                  <img src={group.heroImage} alt={group.name} className="h-full w-full object-cover" />
+                  <img src="/src/assets/images/Ghana-Susu-1.webp" alt={group.name} className="h-full w-full object-cover" />
                 </div>
                 <div className="space-y-4 p-6">
                   <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold text-slate-900 dark:text-white">{group.name}</h2>
                     <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-                      <UsersIcon size={14} /> {group.totalMembers} members
+                      <UsersIcon size={14} /> {totalMembers} members
                     </span>
                   </div>
                   <div className="grid gap-2 text-sm text-slate-600 dark:text-slate-300">
                     <p>
                       Cycle status:{' '}
-                      <span className="font-semibold text-slate-900 dark:text-white capitalize">{group.cycleStatus}</span>
+                      <span className="font-semibold text-slate-900 dark:text-white capitalize">{cycleStatus}</span>
                     </p>
                     <p>
-                      Contribution: GH?{contributionAmount.toLocaleString()} per {group.contributionFrequency}
+                      Contribution: GH₵{contributionAmount?.toLocaleString() || 0} per {contributionFrequency}
                     </p>
                     <p className="inline-flex items-center gap-2">
                       <CalendarDaysIcon size={16} className="text-primary" />
@@ -103,7 +102,7 @@ const Groups = () => {
                     </p>
                   </div>
                   <div className="flex items-center justify-between text-sm font-semibold text-primary">
-                    <span>Total pool GH?{totalPool.toLocaleString()}</span>
+                    <span>Total pool GH₵{totalPool?.toLocaleString() || 0}</span>
                     <ArrowUpRightIcon size={18} />
                   </div>
                 </div>

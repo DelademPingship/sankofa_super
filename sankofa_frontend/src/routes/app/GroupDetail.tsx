@@ -70,18 +70,20 @@ const GroupDetail = () => {
     );
   }
 
-  const roster = ['Ama Boateng', 'Yaw Mensah', 'Akosua Agyeman', 'Kojo Owusu', 'Efua Serwaa', 'Nana Addo'];
+  const roster = group.memberNames || ['Ama Boateng', 'Yaw Mensah', 'Akosua Agyeman', 'Kojo Owusu', 'Efua Serwaa', 'Nana Addo'];
   const groupTransactions = transactions.filter((transaction) => transaction.type !== 'deposit');
 
   // Handle API response structure vs expected structure
-  const totalMembers = group.totalMembers || group.memberIds?.length || 0;
+  const totalMembers = group.memberIds?.length || 0;
   const contributionAmount = group.contributionAmount || 0;
-  const contributionFrequency = group.contributionFrequency || 'weekly';
-  const totalPool = group.totalPool || 0;
+  const contributionFrequency = group.frequency || 'weekly';
+  const totalPool = (contributionAmount * totalMembers) || 0;
   const nextPayoutDate = group.nextPayoutDate || null;
-  const nextPayoutRecipient = group.nextPayoutRecipient || null;
-  const cycleStatus = group.cycleStatus || 'draft';
-  const heroImage = group.heroImage || 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80';
+  const nextPayoutRecipient = group.memberNames?.[0] || null;
+  const cycleStatus = group.isPublic ? 'active' : 'draft';
+  const cycleNumber = group.cycleNumber || 1;
+  const totalCycles = group.totalCycles || totalMembers;
+  const heroImage = '/src/assets/images/Ghana-Susu-1.webp';
 
   return (
     <div className="space-y-8">
@@ -95,8 +97,8 @@ const GroupDetail = () => {
             <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{cycleStatus}</span>
           </div>
           <p className="text-sm text-slate-600 dark:text-slate-300">
-            Transparent susu circle with GH₵{contributionAmount?.toLocaleString() || 0} contributions and rotating payout schedule. This mirrors the
-            mobile detail view with roster, activity, and payout insights.
+            {group.description || `Transparent susu circle with GH₵${contributionAmount?.toLocaleString() || 0} contributions and rotating payout schedule.`} 
+            Currently in cycle {cycleNumber} of {totalCycles}. {group.requiresApproval ? 'Requires approval to join.' : 'Open to join.'}
           </p>
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl bg-slate-50/80 p-4 text-sm text-slate-600 shadow-inner dark:bg-slate-900/60 dark:text-slate-300">
