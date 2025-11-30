@@ -2,6 +2,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from '../../components/ThemeToggle';
 import PrimaryButton from '../../components/PrimaryButton';
+import OptimizedImage from '../../components/OptimizedImage';
 import { authService } from '../../services/authService';
 import { userService } from '../../services/userService';
 import { useAuth } from '../../contexts/AuthContext';
@@ -285,10 +286,12 @@ const Login = () => {
               )}
             </div>
             <div className="relative hidden md:block">
-              <img
+              <OptimizedImage
                 src={ContribImage}
                 alt="Member smiling"
-                className="h-full w-full object-cover"
+                className="h-full w-full"
+                priority={true}
+                loading="eager"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 rounded-3xl bg-white/90 p-6 text-sm text-slate-600 shadow-xl backdrop-blur dark:bg-slate-900/80 dark:text-slate-300">

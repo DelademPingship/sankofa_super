@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { onboardingSlides } from '../../assets/data/mockData';
 import ThemeToggle from '../../components/ThemeToggle';
 import PrimaryButton from '../../components/PrimaryButton';
+import OptimizedImage from '../../components/OptimizedImage';
 
 const Onboarding = () => {
   const [step, setStep] = useState(0);
@@ -60,7 +61,13 @@ const Onboarding = () => {
               </div>
             </div>
             <div className="relative hidden md:block">
-              <img src={slide.image} alt={slide.title} className="h-full w-full object-cover" />
+              <OptimizedImage
+                src={slide.image}
+                alt={slide.title}
+                className="h-full w-full"
+                priority={true}
+                loading="eager"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
             </div>
           </div>

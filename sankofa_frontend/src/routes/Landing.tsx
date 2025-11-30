@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import ThemeToggle from '../components/ThemeToggle';
 import PrimaryButton from '../components/PrimaryButton';
+import OptimizedImage from '../components/OptimizedImage';
 import { CheckCircle2, Smartphone, Users, Wallet, ShieldCheck } from 'lucide-react';
 import GhanaSusuImage from '../assets/images/Ghana-Susu-1.webp';
 
@@ -94,10 +95,12 @@ const Landing = () => {
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-primary/20 blur-3xl dark:bg-primary/30" />
             <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
-              <img
+              <OptimizedImage
                 src={GhanaSusuImage}
                 alt="Sankofa members collaborating"
-                className="h-full w-full object-cover"
+                className="h-full w-full"
+                priority={true}
+                loading="eager"
               />
             </div>
           </div>
