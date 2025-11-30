@@ -351,7 +351,7 @@ const Register = () => {
             </div>
             <div className="relative hidden md:block">
               <img
-                src="money.jpg"
+                src="/src/assets/images/money.jpg"
                 alt="New member celebrating"
                 className="h-full w-full object-cover"
               />

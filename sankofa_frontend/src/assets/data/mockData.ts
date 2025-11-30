@@ -19,17 +19,17 @@ export const onboardingSlides = [
   {
     title: 'Build wealth together',
     description: 'Join trusted susu groups with instant transparency, flexible payouts, and community safeguards.',
-    image: 'ghana-cedi.jpg'
+    image: '/src/assets/images/ghana-cedi.jpg.webp'
   },
   {
     title: 'Boost your savings goals',
     description: 'Automated reminders, mobile money deposits, and celebration milestones keep you motivated.',
-    image: 'Savings.jpg'
+    image: '/src/assets/images/Savings.jpg'
   },
   {
     title: 'Stay in control 24/7',
     description: 'Track contributions, payouts, and receipts in real-time across devices with Sankofa.',
-    image: 'susu-collect.webp'
+    image: '/src/assets/images/susu-collect.webp'
   }
 ];
 

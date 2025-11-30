@@ -285,7 +285,7 @@ const Login = () => {
             </div>
             <div className="relative hidden md:block">
               <img
-                src="Contrib.png"
+                src="/src/assets/images/Contrib.png"
                 alt="Member smiling"
                 className="h-full w-full object-cover"
               />
