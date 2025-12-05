@@ -584,7 +584,7 @@ class DashboardMetricsView(APIView):
         previous_active_members = User.objects.filter(is_active=True, date_joined__date__lte=previous_week_end).count()
 
         total_wallet_balance = (
-            Wallet.objects.aggregate(
+            Wallet.objects.filter(is_platform=False).aggregate(
                 total=Coalesce(Sum("balance"), Value(Decimal("0.00")))
             )["total"]
         )

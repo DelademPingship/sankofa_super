@@ -91,13 +91,15 @@ class AdminApiTests(APITestCase):
             channel="Bank Transfer",
         )
 
-        self.support_article = SupportArticle.objects.create(
+        self.support_article, _ = SupportArticle.objects.get_or_create(
             slug="faq-contribution-missing-payment",
-            category="Wallet & Cashflow",
-            title="Reconcile a missing contribution payment",
-            summary="Checklist for verifying MoMo receipts when contributions fail to post.",
-            link="https://support.sankofa/disputes/missing-contribution",
-            tags=["MoMo", "Ledger"],
+            defaults={
+                "category": "Wallet & Cashflow",
+                "title": "Reconcile a missing contribution payment",
+                "summary": "Checklist for verifying MoMo receipts when contributions fail to post.",
+                "link": "https://support.sankofa/disputes/missing-contribution",
+                "tags": ["MoMo", "Ledger"],
+            }
         )
 
         self.dispute = Dispute.objects.create(
@@ -185,6 +187,25 @@ class AdminApiTests(APITestCase):
             sample = response.data["upcoming_payouts"][0]
             self.assertIn("description", sample)
             self.assertIn("status", sample)
+
+        # Verify total_wallet_balance excludes platform wallet
+        # Member has 0 balance initially + 500 pending deposit (not in balance yet) - 1600 failed withdrawal
+        # Let's check the actual wallet balance of the member
+        member_wallet = self.member.wallet
+        # The setup created a pending deposit (no balance change) and failed withdrawal (no balance change)
+        # So member balance should be 0.00 unless we update it.
+        # Let's manually set a balance to verify the sum
+        member_wallet.balance = Decimal("100.00")
+        member_wallet.save()
+        
+        # Platform wallet should be ignored
+        platform_wallet = Wallet.objects.ensure_platform()
+        platform_wallet.balance = Decimal("5000.00")
+        platform_wallet.save()
+
+        response = self.client.get(url)
+        total_balance = response.data["kpis"]["total_wallet_balance"]["current"]
+        self.assertEqual(total_balance, 100.00)
 
     def test_groups_list_includes_membership_and_invite_counts(self):
         self.authenticate()
